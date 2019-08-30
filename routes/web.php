@@ -15,16 +15,28 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return view('welcome');
-});
 
-Route::get('/admin/login', 'Frontend\LoginController@index')->name('admin.login');
-Route::post('/admin/login', 'Frontend\LoginController@login')->name('admin.postlogin');
+Route::get('admin/login', 'Frontend\LoginController@index')->name('admin.login');
+Route::post('admin/login', 'Frontend\LoginController@login')->name('admin.postlogin');
 
+
+
+Route::group(
+    [
+        'as' => 'admin.',
+        'prefix' => 'admin',
+        'namespace' => 'Backend\Admin',
+    ],
+    function () {
 
 // Admin Dashboard Route
-Route::get('admin/dashboard','Backend\Admin\DashboardController@index')->name('admin.dashboard');
-Route::post('admin/logout','Backend\Admin\DashboardController@logout')->name('admin.logout');
+        Route::get('dashboard','DashboardController@index')->name('dashboard');
+        Route::post('logout','DashboardController@logout')->name('logout');
+    }
+);
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 
